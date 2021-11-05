@@ -1,0 +1,50 @@
+version: '3'
+services: 
+  redis:
+    image: 'redis:latest'
+  worker:
+    build:
+      dockerfile: Dockerfile
+      context: ./worker
+    expose:
+      - "5000"
+  apirest:
+    build:
+      dockerfile: Dockerfile
+      context: ./apirest
+    volumes: 
+      - ./apirest/api:/app/api
+      - ./apirest/package.json:/app/package.json|
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - WORKER_HOST=worker
+      - WORKER_PORT=5000
+      - TOKEN_SECRET=002codwzlolwaifidiecelebrateSt34ymydD4y
+    depends_on: 
+      - worker
+    #ports: 
+    #  - "3001:3001"
+  site:
+    stdin_open: true
+    build: 
+      dockerfile: Dockerfile
+      context: ./site
+    volumes: 
+      - ./site/cliente:/app/cliente
+      - ./site/ejs:/app/ejs
+      - ./site/public:/app/public
+      - ./site/package.json:/app/package.json
+    #ports: 
+    #  - "80:3000"
+  nginx:
+    depends_on: 
+      - site
+      - apirest
+      - worker
+    restart: always
+    build: 
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports: 
+      - "80:80"

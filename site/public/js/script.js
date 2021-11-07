@@ -18,22 +18,37 @@ function sendForm(n1,n2,op){
         console.log(error);
       });
 }
-
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+let token = urlParams.get('token');
+let text = '';
 function showHistory(){
+  text = '';
   console.log('Pidiendo historial');
-  const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InNlcmdpb3JvaGVycEBnbWFpbC5jb20iLCJpYXQiOjE2MzYwNzY4MjcsImV4cCI6MTYzNjA3NzMyN30.-M3e0ARYE_nH8vuLAzvw9x5GOaTSMTpMNuiQhNbAFpI';
+  if (token == null) {
+    const resultado= document.getElementById('historico');
+    resultado.innerHTML = `Inicia sesion para ver el historial <br>`;
+    return;
+  }
+  //token='///TOOKENTOENSLSSLFSFJ';
   axios.get('http://localhost/api/historial', {
-      Headers:{
-        Authorization:token
+    headers:{
+        authorization:token
       }
     }
   )
   .then((response) => {
-    console.log(response.data);
+    //console.log(response.data);
     const resultado= document.getElementById('historico');
-    resultado.innerHTML = `historial <br>: ${response.data.historial}`;
+    let datos = response.data.historial;
+    datos.forEach(showData)
+    resultado.innerHTML = `Historial: <br> ${text}`;
   }, (error) => {
     console.log(error);
   });
 
+}
+
+function showData(value){
+  text += `<label> ${value} </label> <br>`;
 }

@@ -17,6 +17,7 @@ function ingresar(){
         }
         console.log(token);
         console.log(mensaje);
+        window.location.replace("http://localhost?token="+token);
       }, (error) => {
         console.log(error);
       });

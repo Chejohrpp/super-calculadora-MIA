@@ -12,7 +12,7 @@ router.post('/register',async (req,res)=>{
             res.status(503).json({success:-1})
         }
         if (existe !== 0) {
-            res.status(409).json({success:0})
+            res.json({success:0})
         }
         else{
             crypto.randomBytes(16,(err,salt)=> {
@@ -22,7 +22,7 @@ router.post('/register',async (req,res)=>{
                     try{
                         await users.setUser(email,encrypetedPassword,newSalt);
                     }catch(error){
-                        res.status(503),json({success:-1});
+                        res.json({success:-1});
                     }
                 })
             })

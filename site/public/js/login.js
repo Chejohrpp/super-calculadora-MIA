@@ -19,6 +19,8 @@ function ingresar(){
         console.log(mensaje);
         window.location.replace("http://localhost?token="+token);
       }, (error) => {
-        console.log(error);
+        // console.log(error);
+        const resultado= document.getElementById('resultado');
+        resultado.innerHTML = "Usuario o contraseña incorrectos";
       });
 }

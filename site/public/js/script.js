@@ -42,9 +42,16 @@ function showHistory(){
     const resultado= document.getElementById('historico');
     let datos = response.data.historial;
     datos.forEach(showData)
+    console.log(response.status);
     resultado.innerHTML = `Historial: <br> ${text}`;
   }, (error) => {
-    console.log(error);
+    const resultado= document.getElementById('historico');
+    resultado.innerHTML = `Vuelve a iniciar sesion`;
+    console.log(error.name);
+    console.log(error.message);
+    if (error.status == 403) {
+      console.log('Error 403')
+    }
   });
 
 }

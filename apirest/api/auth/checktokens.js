@@ -9,7 +9,7 @@ module.exports.signToken = (id)=>{
         },
         tokenSecret,
         {
-            expiresIn:500
+            expiresIn:100
         }
     );
 }
